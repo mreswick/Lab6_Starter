@@ -194,7 +194,8 @@ class RecipeCard extends HTMLElement {
     card.append(timeRec);
     card.append(pIngred);
 
-    // 
+    // attach shadow:
+    let shadow = card.attachShadow({mode: 'open'});
 
 
     console.log(searchForKey(data, "rating"))
