@@ -114,19 +114,69 @@ class RecipeCard extends HTMLElement {
     aTitle.setAttribute("href", getUrl(data));
     aTitle.innerHtml = recipeTitle;
 
-
     const pOrg = document.createElement('p');
     pOrg.setAttribute("class", "organization");
-    pOrg.innerHtml = getOrganization(data);
+    pOrg.innerHTML = getOrganization(data);
 
     const divRating = document.createElement('div');
     divRating.setAttribute("class", "rating");
 
     const spanAvgRev = document.createElement('span');
+    numRatings = getRatingCount(data);
+
+    const spanTotRev = document.createElement('span');
+    
 
     const imgAvgRev = document.createElement('img');
 
-    const spanTotRev = document.createElement('span');
+    // if has ratings, then create "With a Rating" card for the recipe
+    if(numRatings > 0) {
+      spanAvgRev.innerHTML = numRatings;
+      // round up for stars (i.e., 4.8 rating -> 5 star icon as >= 4.5)
+      avgRating = getRating(data);
+      
+      imgAvgRevSrc = "";
+      imgAvgRevAlt = "";
+
+      // set rating image and alt attribute based on (avg) rating val:
+      if(avgRating >= 4.5) {
+        imgAvgRevSrc = "/assets/images/icons/5-star.svg"
+        imgAvgRevAlt = "5 stars" 
+      } else if(avgRating < 4.5 && avgRating >= 3.5) {
+        imgAvgRevSrc = "/assets/images/icons/4-star.svg"
+        imgAvgRevAlt = "4 stars" 
+      } else if(avgRating < 3.5 && avgRating >= 2.5) {
+        imgAvgRevSrc = "/assets/images/icons/3-star.svg"
+        imgAvgRevAlt = "3 stars" 
+      } else if(avgRating < 2.5 && avgRating >= 1.5) {
+        imgAvgRevSrc = "/assets/images/icons/2-star.svg"
+        imgAvgRevAlt = "2 stars"
+      } else if(avgRating < 1.5 && avgRating >= 0.5) {
+        imgAvgRevSrc = "/assets/images/icons/1-star.svg"
+        imgAvgRevAlt = "1 stars"
+      } else { // < 0.5 rating
+        imgAvgRevSrc = "/assets/images/icons/0-star.svg"
+        imgAvgRevAlt = "0 stars"
+      }
+
+      imgAvgRev.setAttribute("src", imgAvgRevSrc);
+      imgAvgRev.setAttribute("alt", imgAvgRevAlt);
+      spanAvgRev.innerHTML = avgRating; 
+      spanTotRev.innerHTML = "(" + numRatings + ")";
+      divRating.appendChild(spanAvgRev)
+      // only append img and total_reviews span if has ratings:
+      divRating.appendChild(imgAvgRating);
+      divRating.appendChild(spanAvgRev);
+
+
+    } // else if has no ratings, create "Without a Rating" card
+    else {
+      spanAvgRev.innerHTML = "No Reviews";
+    }
+
+    
+
+    
 
     const timeRec = document.createElement('time');
     timeRec.innerHTML = getRecTotTime(data);
@@ -188,7 +238,7 @@ function getRating(data) {
 
 // get rating count
 function getRatingCount(data) {
-  return searchForKey(data, "")
+  return searchForKey(data, "ratingCount")
 }
 
 
