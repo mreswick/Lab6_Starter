@@ -104,14 +104,15 @@ class RecipeCard extends HTMLElement {
     // ## before calling appendChild() on it (or otherwise inserting/adding it to
     // ## the DOM tree)
     imgRec.setAttribute("src", getThumbnailUrl(data));
+    recipeTitle = getRecipeTitle(data);
+    imgRec.setAttribute("alt", recipeTitle); // treat title == recipe title
 
-    
     const pTitle = document.createElement('p');
     pTitle.setAttribute("class", "title");
 
     const aTitle = document.createElement('a');
     aTitle.setAttribute("href", getUrl(data));
-    aTitle.innerHtml = "Title";
+    aTitle.innerHtml = recipeTitle;
 
 
     const pOrg = document.createElement('p');
@@ -128,11 +129,12 @@ class RecipeCard extends HTMLElement {
     const spanTotRev = document.createElement('span');
 
     const timeRec = document.createElement('time');
+    timeRec.innerHTML = getRecTotTime(data);
 
     const pIngred = document.createElement('p');
     pIngred.setAttribute("class", "ingredients");
 
-
+    console.log(searchForKey(data, "rating"))
     
 
 
@@ -153,8 +155,9 @@ class RecipeCard extends HTMLElement {
 
 
 //## Self-coded:
+// gets url for thumnbnail for recipe
 function getThumbnailUrl(data) {
-  thumbnailUrl = searchForKey(data, "thumbnailUrl")
+  thumbnailUrl = searchForKey(data, "thumbnailUrl");
   return thumbnailUrl;
 }
 
@@ -162,7 +165,31 @@ function getTitleUrl(data) {
 
 }
 
+// gets title of recipe
+function getRecipeTitle(data) {
+  return searchForKey(data, "headline");
 
+}
+
+// gets total cook time of recipe
+function getRecTotTime(data) {
+  return convertTime(searchForKey(data, "totalTime"));
+}
+
+// gets ingredients
+function getIngred(data) {
+  return searchForKey(data, "recipeIngredient");
+}
+
+// get rating
+function getRating(data) {
+  return searchForKey(data, "aggregateRating");
+}
+
+// get rating count
+function getRatingCount(data) {
+  return searchForKey(data, "")
+}
 
 
 // ##
