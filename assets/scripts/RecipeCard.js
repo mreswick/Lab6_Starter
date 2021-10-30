@@ -1,8 +1,11 @@
 class RecipeCard extends HTMLElement {
+  shadowRootEl = "";
   constructor() {
     // Part 1 Expose - TODO
 
     // You'll want to attach the shadow DOM here
+    super();
+    this.shadowRootEl = this.attachShadow({mode: 'open'});
   }
 
   set data(data) {
@@ -96,6 +99,44 @@ class RecipeCard extends HTMLElement {
     //    element.appendChild()
     //    & All of the helper functions below
 
+    const imgRec = document.createElement('img'); // img for recipe
+    // ## note to self: have to edit/modify a tag (such as its attributes, etc.)
+    // ## before calling appendChild() on it (or otherwise inserting/adding it to
+    // ## the DOM tree)
+    imgRec.setAttribute("src", getThumbnailUrl(data));
+
+    
+    const pTitle = document.createElement('p');
+    pTitle.setAttribute("class", "title");
+
+    const aTitle = document.createElement('a');
+    aTitle.setAttribute("href", getUrl(data));
+    aTitle.innerHtml = "Title";
+
+
+    const pOrg = document.createElement('p');
+    pOrg.setAttribute("class", "organization");
+    pOrg.innerHtml = getOrganization(data);
+
+    const divRating = document.createElement('div');
+    divRating.setAttribute("class", "rating");
+
+    const spanAvgRev = document.createElement('span');
+
+    const imgAvgRev = document.createElement('img');
+
+    const spanTotRev = document.createElement('span');
+
+    const timeRec = document.createElement('time');
+
+    const pIngred = document.createElement('p');
+    pIngred.setAttribute("class", "ingredients");
+
+
+    
+
+
+
     // Make sure to attach your root element and styles to the shadow DOM you
     // created in the constructor()
 
@@ -109,6 +150,24 @@ class RecipeCard extends HTMLElement {
 /***          Below are some functions I used when making          ***/
 /***     the solution, feel free to use them or not, up to you     ***/
 /*********************************************************************/
+
+
+//## Self-coded:
+function getThumbnailUrl(data) {
+  thumbnailUrl = searchForKey(data, "thumbnailUrl")
+  return thumbnailUrl;
+}
+
+function getTitleUrl(data) {
+
+}
+
+
+
+
+// ##
+
+
 
 /**
  * Recursively search for a key nested somewhere inside an object

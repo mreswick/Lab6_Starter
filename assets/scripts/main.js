@@ -43,6 +43,27 @@ async function fetchRecipes() {
     // in the recipes folder and fetch them from there. You'll need to add their paths to the recipes array.
 
     // Part 1 Expose - TODO
+
+    // # Part 1 - self-coded:
+    for(let i = 0; i < recipes.length; i++) {
+      let x = fetch(recipes[i])
+      .then(response => response.json())
+      .then(data => {
+        recipeData[recipes[i]] = data;
+        console.log(data)
+      })
+      .then(() => {
+        if(recipeData.length == recipes.length) {
+          resolve(true)
+        }
+      })
+      .catch(() => {
+        console.log("In catch for fetch().");
+        reject(false);
+      })
+    }
+
+
   });
 }
 
@@ -54,6 +75,16 @@ function createRecipeCards() {
   // show any others you've added when the user clicks on the "Show more" button.
 
   // Part 1 Expose - TODO
+  for(let i = 0; i < Object.keys(recipeData).length; i++) {
+    const recipeEl = document.createElement("RecipeCard");
+    recipeEl.data = recipeData[recipes[i]]
+    // note that set data(data) isn't a function, so
+    // you can't/don't use that syntax with it, but
+    // rather use an assignment syntax.
+    // .setData(recipeData[recipes[i]])
+    const mainEl = document.getElementsByTagName("main")[0];
+    mainEl.appendChild(recipeEl);
+  }
 }
 
 function bindShowMore() {
