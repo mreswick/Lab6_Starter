@@ -113,6 +113,7 @@ class RecipeCard extends HTMLElement {
     const aTitle = document.createElement('a');
     aTitle.setAttribute("href", getUrl(data));
     aTitle.innerHtml = recipeTitle;
+    pTitle.appendChild(aTitle);
 
     const pOrg = document.createElement('p');
     pOrg.setAttribute("class", "organization");
@@ -172,17 +173,29 @@ class RecipeCard extends HTMLElement {
     } // else if has no ratings, create "Without a Rating" card
     else {
       spanAvgRev.innerHTML = "No Reviews";
+      divRating.appendChild(spanAvgRev);
     }
 
-    
-
-    
-
+    // total time for recipe:
     const timeRec = document.createElement('time');
     timeRec.innerHTML = getRecTotTime(data);
 
+    // ingredients list for recipe:
     const pIngred = document.createElement('p');
     pIngred.setAttribute("class", "ingredients");
+    pIngred.innerHTML = getIngred(data);
+
+    // ##
+    // append children of article/card:
+    card.appendChild(imgRec);
+    card.appendChild(pTitle);
+    card.appendChild(pOrg);
+    card.appendChild(divRating);
+    card.append(timeRec);
+    card.append(pIngred);
+
+    // 
+
 
     console.log(searchForKey(data, "rating"))
     
