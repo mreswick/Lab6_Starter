@@ -195,7 +195,7 @@ class RecipeCard extends HTMLElement {
     card.append(pIngred);
 
     // attach shadow:
-    let shadow = card.attachShadow({mode: 'open'});
+    this.shadowRootEl.appendChild(card);
 
 
     console.log(searchForKey(data, "rating"))
