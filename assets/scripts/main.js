@@ -34,6 +34,7 @@ async function init() {
   bindShowMore();
 }
 
+
 async function fetchRecipes() {
   console.log("In fetchRecipes.");
   return new Promise((resolve, reject) => {
