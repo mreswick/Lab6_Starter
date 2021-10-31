@@ -1,11 +1,14 @@
 class RecipeCard extends HTMLElement {
-  shadowRootEl = "";
+
+  // shadowRootEl = "";
+
   constructor() {
     // Part 1 Expose - TODO
 
     // You'll want to attach the shadow DOM here
     super();
-    this.shadowRootEl = this.attachShadow({mode: 'open'});
+    // this.shadowRootEl = this.attachShadow({mode: 'open'});
+    this.attachShadow({mode: 'open'});
   }
 
   set data(data) {
@@ -99,16 +102,13 @@ class RecipeCard extends HTMLElement {
     //    element.appendChild()
     //    & All of the helper functions below
 
-    console.log("In recipe card.");
-
     const imgRec = document.createElement('img'); // img for recipe
     // ## note to self: have to edit/modify a tag (such as its attributes, etc.)
     // ## before calling appendChild() on it (or otherwise inserting/adding it to
     // ## the DOM tree)
     imgRec.setAttribute("src", getThumbnailUrl(data));
     const recipeTitle = getRecipeTitle(data);
-    //console.log("recipeTitle:");
-    //console.log(recipeTitle);
+
     imgRec.setAttribute("alt", recipeTitle); // treat title == recipe title
 
     const pTitle = document.createElement('p');
@@ -140,39 +140,43 @@ class RecipeCard extends HTMLElement {
       spanAvgRev.innerHTML = numRatings;
       // round up for stars (i.e., 4.8 rating -> 5 star icon as >= 4.5)
       const avgRating = getRating(data);
+
+      let avgRatingNum = avgRating["ratingValue"];
+
       
       let imgAvgRevSrc = "";
       let imgAvgRevAlt = "";
 
       // set rating image and alt attribute based on (avg) rating val:
-      if(avgRating >= 4.5) {
-        imgAvgRevSrc = "/assets/images/icons/5-star.svg"
-        imgAvgRevAlt = "5 stars" 
-      } else if(avgRating < 4.5 && avgRating >= 3.5) {
-        imgAvgRevSrc = "/assets/images/icons/4-star.svg"
-        imgAvgRevAlt = "4 stars" 
-      } else if(avgRating < 3.5 && avgRating >= 2.5) {
-        imgAvgRevSrc = "/assets/images/icons/3-star.svg"
-        imgAvgRevAlt = "3 stars" 
-      } else if(avgRating < 2.5 && avgRating >= 1.5) {
-        imgAvgRevSrc = "/assets/images/icons/2-star.svg"
-        imgAvgRevAlt = "2 stars"
-      } else if(avgRating < 1.5 && avgRating >= 0.5) {
-        imgAvgRevSrc = "/assets/images/icons/1-star.svg"
-        imgAvgRevAlt = "1 stars"
+      if(avgRatingNum >= 4.5) {
+        imgAvgRevSrc = "assets/images/icons/5-star.svg";
+        imgAvgRevAlt = "5 stars"; 
+      } else if(avgRatingNum < 4.5 && avgRatingNum >= 3.5) {
+        imgAvgRevSrc = "assets/images/icons/4-star.svg";
+        imgAvgRevAlt = "4 stars";
+      } else if(avgRatingNum < 3.5 && avgRatingNum >= 2.5) {
+        imgAvgRevSrc = "assets/images/icons/3-star.svg";
+        imgAvgRevAlt = "3 stars"; 
+      } else if(avgRatingNum < 2.5 && avgRatingNum >= 1.5) {
+        imgAvgRevSrc = "assets/images/icons/2-star.svg";
+        imgAvgRevAlt = "2 stars";
+      } else if(avgRatingNum < 1.5 && avgRatingNum >= 0.5) {
+        imgAvgRevSrc = "assets/images/icons/1-star.svg";
+        imgAvgRevAlt = "1 stars";
       } else { // < 0.5 rating
-        imgAvgRevSrc = "/assets/images/icons/0-star.svg"
-        imgAvgRevAlt = "0 stars"
+        imgAvgRevSrc = "assets/images/icons/0-star.svg";
+        imgAvgRevAlt = "0 stars";
       }
 
+
       imgAvgRev.setAttribute("src", imgAvgRevSrc);
-      imgAvgRev.setAttribute("alt", imgAvgRev);
-      spanAvgRev.innerHTML = avgRating; 
+      imgAvgRev.setAttribute("alt", imgAvgRevAlt);
+      spanAvgRev.innerHTML = avgRatingNum; 
       spanTotRev.innerHTML = "(" + numRatings + ")";
-      divRating.appendChild(spanAvgRev)
+      divRating.appendChild(spanAvgRev);
       // only append img and total_reviews span if has ratings:
       divRating.appendChild(imgAvgRev);
-      divRating.appendChild(spanAvgRev);
+      divRating.appendChild(spanTotRev);
 
 
     } // else if has no ratings, create "Without a Rating" card
@@ -188,7 +192,9 @@ class RecipeCard extends HTMLElement {
     // ingredients list for recipe:
     const pIngred = document.createElement('p');
     pIngred.setAttribute("class", "ingredients");
-    pIngred.innerHTML = getIngred(data);
+
+    pIngred.innerHTML = createIngredientList(getIngred(data));
+
 
     // ##
     // append children of article/card:
@@ -201,14 +207,10 @@ class RecipeCard extends HTMLElement {
     card.append(pIngred);
 
     // attach shadow:
-    this.shadowRootEl.appendChild(styleElem);
-    this.shadowRootEl.appendChild(card);
+
+    this.shadowRoot.appendChild(styleElem);
+    this.shadowRoot.appendChild(card);
     
-
-
-    // console.log(searchForKey(data, "rating"))
-    
-
 
 
     // Make sure to attach your root element and styles to the shadow DOM you
@@ -233,9 +235,6 @@ function getThumbnailUrl(data) {
   return thumbnailUrl;
 }
 
-function getTitleUrl(data) {
-
-}
 
 // gets title of recipe
 function getRecipeTitle(data) {
@@ -260,7 +259,7 @@ function getRating(data) {
 
 // get rating count
 function getRatingCount(data) {
-  return searchForKey(data, "ratingCount")
+  return searchForKey(data, "ratingCount");
 }
 
 
