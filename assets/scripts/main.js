@@ -22,17 +22,20 @@ window.addEventListener('DOMContentLoaded', init);
 async function init() {
   // fetch the recipes and wait for them to load
   let fetchSuccessful = await fetchRecipes();
+  console.log("After fetched recipes.");
   // if they didn't successfully load, quit the function
   if (!fetchSuccessful) {
     return;
   };
   // Add the first three recipe cards to the page
+  console.log("Calling createRecipeCards.");
   createRecipeCards();
   // Make the "Show more" button functional
   bindShowMore();
 }
 
 async function fetchRecipes() {
+  console.log("In fetchRecipes.");
   return new Promise((resolve, reject) => {
     // This function is called for you up above
     // From this function, you are going to fetch each of the recipes in the 'recipes' array above.
@@ -46,8 +49,10 @@ async function fetchRecipes() {
 
     // Part 1 Expose - TODO
 
+
     // # Part 1 - self-coded:
     for(let i = 0; i < recipes.length; i++) {
+
       let x = fetch(recipes[i])
       .then(response => response.json())
       .then(data => {
@@ -74,7 +79,6 @@ function createRecipeCards() {
   // three recipes we give you, you'll use the bindShowMore() function to
   // show any others you've added when the user clicks on the "Show more" button.
 
-
   // Part 1 Expose - TODO
   for(let i = 0; i < Object.keys(recipeData).length; i++) {
     // only create recipes for first 3 (that we already were given):
@@ -84,12 +88,14 @@ function createRecipeCards() {
 
     const recipeEl = document.createElement("recipe-card");
     recipeEl.data = recipeData[recipes[i]];
+
     // note to self that set data(data) isn't a function, so
     // you can't/don't use that syntax with it, but
     // rather use an assignment syntax.
     // .setData(recipeData[recipes[i]])
     const mainEl = document.getElementsByTagName("main")[0];
     mainEl.appendChild(recipeEl);
+
   }
 }
 
