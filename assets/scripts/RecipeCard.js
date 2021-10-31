@@ -140,24 +140,25 @@ class RecipeCard extends HTMLElement {
       spanAvgRev.innerHTML = numRatings;
       // round up for stars (i.e., 4.8 rating -> 5 star icon as >= 4.5)
       const avgRating = getRating(data);
+      let avgRatingNum = avgRating["ratingValue"];
       
       let imgAvgRevSrc = "";
       let imgAvgRevAlt = "";
 
       // set rating image and alt attribute based on (avg) rating val:
-      if(avgRating >= 4.5) {
+      if(avgRatingNum >= 4.5) {
         imgAvgRevSrc = "/assets/images/icons/5-star.svg"
         imgAvgRevAlt = "5 stars" 
-      } else if(avgRating < 4.5 && avgRating >= 3.5) {
+      } else if(avgRatingNum < 4.5 && avgRatingNum >= 3.5) {
         imgAvgRevSrc = "/assets/images/icons/4-star.svg"
         imgAvgRevAlt = "4 stars" 
-      } else if(avgRating < 3.5 && avgRating >= 2.5) {
+      } else if(avgRatingNum < 3.5 && avgRatingNum >= 2.5) {
         imgAvgRevSrc = "/assets/images/icons/3-star.svg"
         imgAvgRevAlt = "3 stars" 
-      } else if(avgRating < 2.5 && avgRating >= 1.5) {
+      } else if(avgRatingNum < 2.5 && avgRatingNum >= 1.5) {
         imgAvgRevSrc = "/assets/images/icons/2-star.svg"
         imgAvgRevAlt = "2 stars"
-      } else if(avgRating < 1.5 && avgRating >= 0.5) {
+      } else if(avgRatingNum < 1.5 && avgRatingNum >= 0.5) {
         imgAvgRevSrc = "/assets/images/icons/1-star.svg"
         imgAvgRevAlt = "1 stars"
       } else { // < 0.5 rating
@@ -167,13 +168,12 @@ class RecipeCard extends HTMLElement {
 
       imgAvgRev.setAttribute("src", imgAvgRevSrc);
       imgAvgRev.setAttribute("alt", imgAvgRev);
-      spanAvgRev.innerHTML = avgRating; 
+      spanAvgRev.innerHTML = avgRatingNum; 
       spanTotRev.innerHTML = "(" + numRatings + ")";
-      divRating.appendChild(spanAvgRev)
+      divRating.appendChild(spanAvgRev);
       // only append img and total_reviews span if has ratings:
       divRating.appendChild(imgAvgRev);
-      divRating.appendChild(spanAvgRev);
-
+      divRating.appendChild(spanTotRev);
 
     } // else if has no ratings, create "Without a Rating" card
     else {
