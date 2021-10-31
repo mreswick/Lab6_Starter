@@ -1,7 +1,5 @@
 class RecipeCard extends HTMLElement {
-
   // shadowRootEl = "";
-
   constructor() {
     // Part 1 Expose - TODO
 
@@ -140,9 +138,7 @@ class RecipeCard extends HTMLElement {
       spanAvgRev.innerHTML = numRatings;
       // round up for stars (i.e., 4.8 rating -> 5 star icon as >= 4.5)
       const avgRating = getRating(data);
-
       let avgRatingNum = avgRating["ratingValue"];
-
       
       let imgAvgRevSrc = "";
       let imgAvgRevAlt = "";
@@ -178,7 +174,6 @@ class RecipeCard extends HTMLElement {
       divRating.appendChild(imgAvgRev);
       divRating.appendChild(spanTotRev);
 
-
     } // else if has no ratings, create "Without a Rating" card
     else {
       spanAvgRev.innerHTML = "No Reviews";
@@ -192,9 +187,7 @@ class RecipeCard extends HTMLElement {
     // ingredients list for recipe:
     const pIngred = document.createElement('p');
     pIngred.setAttribute("class", "ingredients");
-
     pIngred.innerHTML = createIngredientList(getIngred(data));
-
 
     // ##
     // append children of article/card:
@@ -207,7 +200,6 @@ class RecipeCard extends HTMLElement {
     card.append(pIngred);
 
     // attach shadow:
-
     this.shadowRoot.appendChild(styleElem);
     this.shadowRoot.appendChild(card);
     
@@ -234,7 +226,6 @@ function getThumbnailUrl(data) {
   const thumbnailUrl = searchForKey(data, "thumbnailUrl");
   return thumbnailUrl;
 }
-
 
 // gets title of recipe
 function getRecipeTitle(data) {
