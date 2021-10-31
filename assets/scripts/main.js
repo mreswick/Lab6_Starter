@@ -11,7 +11,7 @@ const recipes = [
 // Once all of the recipes that were specified above have been fetched, their
 // data will be added to this object below. You may use whatever you like for the
 // keys as long as it's unique, one suggestion might but the URL itself
-const recipeData = {}
+const recipeData = {};
 
 window.addEventListener('DOMContentLoaded', init);
 
@@ -57,8 +57,9 @@ async function fetchRecipes() {
       .then(data => {
         recipeData[recipes[i]] = data;
         console.log(data);
+        return data;
       })
-      .then(() => {
+      .then(data => {
         console.log("Object.keys(recipeData).length: ");
         console.log(Object.keys(recipeData).length);
         console.log("recipes.length: ");
@@ -67,8 +68,9 @@ async function fetchRecipes() {
           console.log("recipeData is of length 3.");
           resolve(true);
         }
+        return data;
       })
-      .catch(() => {
+      .catch(data => {
         console.log("In catch for fetch().");
         reject(false);
       })
