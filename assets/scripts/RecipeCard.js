@@ -99,12 +99,16 @@ class RecipeCard extends HTMLElement {
     //    element.appendChild()
     //    & All of the helper functions below
 
+    console.log("In recipe card.");
+
     const imgRec = document.createElement('img'); // img for recipe
     // ## note to self: have to edit/modify a tag (such as its attributes, etc.)
     // ## before calling appendChild() on it (or otherwise inserting/adding it to
     // ## the DOM tree)
     imgRec.setAttribute("src", getThumbnailUrl(data));
-    recipeTitle = getRecipeTitle(data);
+    const recipeTitle = getRecipeTitle(data);
+    //console.log("recipeTitle:");
+    //console.log(recipeTitle);
     imgRec.setAttribute("alt", recipeTitle); // treat title == recipe title
 
     const pTitle = document.createElement('p');
@@ -112,7 +116,7 @@ class RecipeCard extends HTMLElement {
 
     const aTitle = document.createElement('a');
     aTitle.setAttribute("href", getUrl(data));
-    aTitle.innerHtml = recipeTitle;
+    aTitle.innerHTML = recipeTitle;
     pTitle.appendChild(aTitle);
 
     const pOrg = document.createElement('p');
@@ -123,21 +127,22 @@ class RecipeCard extends HTMLElement {
     divRating.setAttribute("class", "rating");
 
     const spanAvgRev = document.createElement('span');
-    numRatings = getRatingCount(data);
+    const imgAvgRev = document.createElement('img');
+    const numRatings = getRatingCount(data);
 
     const spanTotRev = document.createElement('span');
     
 
-    const imgAvgRev = document.createElement('img');
+    
 
     // if has ratings, then create "With a Rating" card for the recipe
     if(numRatings > 0) {
       spanAvgRev.innerHTML = numRatings;
       // round up for stars (i.e., 4.8 rating -> 5 star icon as >= 4.5)
-      avgRating = getRating(data);
+      const avgRating = getRating(data);
       
-      imgAvgRevSrc = "";
-      imgAvgRevAlt = "";
+      let imgAvgRevSrc = "";
+      let imgAvgRevAlt = "";
 
       // set rating image and alt attribute based on (avg) rating val:
       if(avgRating >= 4.5) {
@@ -161,12 +166,12 @@ class RecipeCard extends HTMLElement {
       }
 
       imgAvgRev.setAttribute("src", imgAvgRevSrc);
-      imgAvgRev.setAttribute("alt", imgAvgRevAlt);
+      imgAvgRev.setAttribute("alt", imgAvgRev);
       spanAvgRev.innerHTML = avgRating; 
       spanTotRev.innerHTML = "(" + numRatings + ")";
       divRating.appendChild(spanAvgRev)
       // only append img and total_reviews span if has ratings:
-      divRating.appendChild(imgAvgRating);
+      divRating.appendChild(imgAvgRev);
       divRating.appendChild(spanAvgRev);
 
 
@@ -187,6 +192,7 @@ class RecipeCard extends HTMLElement {
 
     // ##
     // append children of article/card:
+    
     card.appendChild(imgRec);
     card.appendChild(pTitle);
     card.appendChild(pOrg);
@@ -195,8 +201,9 @@ class RecipeCard extends HTMLElement {
     card.append(pIngred);
 
     // attach shadow:
-    this.shadowRootEl.appendChild(card);
     this.shadowRootEl.appendChild(styleElem);
+    this.shadowRootEl.appendChild(card);
+    
 
 
     // console.log(searchForKey(data, "rating"))
@@ -222,7 +229,7 @@ class RecipeCard extends HTMLElement {
 //## Self-coded:
 // gets url for thumnbnail for recipe
 function getThumbnailUrl(data) {
-  thumbnailUrl = searchForKey(data, "thumbnailUrl");
+  const thumbnailUrl = searchForKey(data, "thumbnailUrl");
   return thumbnailUrl;
 }
 

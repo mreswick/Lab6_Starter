@@ -88,7 +88,7 @@ function createRecipeCards() {
 
   // Part 1 Expose - TODO
   for(let i = 0; i < Object.keys(recipeData).length; i++) {
-    const recipeEl = document.createElement("RecipeCard");
+    const recipeEl = document.createElement("recipe-card");
     recipeEl.data = recipeData[recipes[i]]
     // note to self that set data(data) isn't a function, so
     // you can't/don't use that syntax with it, but
