@@ -32,6 +32,7 @@ async function init() {
   bindShowMore();
 }
 
+
 async function fetchRecipes() {
   return new Promise((resolve, reject) => {
     // This function is called for you up above
