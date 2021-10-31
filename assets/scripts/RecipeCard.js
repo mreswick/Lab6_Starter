@@ -100,16 +100,13 @@ class RecipeCard extends HTMLElement {
     //    element.appendChild()
     //    & All of the helper functions below
 
-    console.log("In recipe card.");
-
     const imgRec = document.createElement('img'); // img for recipe
     // ## note to self: have to edit/modify a tag (such as its attributes, etc.)
     // ## before calling appendChild() on it (or otherwise inserting/adding it to
     // ## the DOM tree)
     imgRec.setAttribute("src", getThumbnailUrl(data));
     const recipeTitle = getRecipeTitle(data);
-    //console.log("recipeTitle:");
-    //console.log(recipeTitle);
+
     imgRec.setAttribute("alt", recipeTitle); // treat title == recipe title
 
     const pTitle = document.createElement('p');
@@ -167,8 +164,6 @@ class RecipeCard extends HTMLElement {
         imgAvgRevAlt = "0 stars";
       }
 
-      console.log("imgAvgRevSerc:");
-      console.log(imgAvgRevSrc);
 
       imgAvgRev.setAttribute("src", imgAvgRevSrc);
       imgAvgRev.setAttribute("alt", imgAvgRevAlt);
@@ -208,11 +203,6 @@ class RecipeCard extends HTMLElement {
     this.shadowRoot.appendChild(styleElem);
     this.shadowRoot.appendChild(card);
     
-
-
-    // console.log(searchForKey(data, "rating"))
-    
-
 
 
     // Make sure to attach your root element and styles to the shadow DOM you

@@ -22,21 +22,17 @@ window.addEventListener('DOMContentLoaded', init);
 async function init() {
   // fetch the recipes and wait for them to load
   let fetchSuccessful = await fetchRecipes();
-  console.log("After fetched recipes.");
   // if they didn't successfully load, quit the function
   if (!fetchSuccessful) {
-    console.log('Recipe fetch unsuccessful');
     return;
   };
   // Add the first three recipe cards to the page
-  console.log("Calling createRecipeCards.");
   createRecipeCards();
   // Make the "Show more" button functional
   bindShowMore();
 }
 
 async function fetchRecipes() {
-  console.log("In fetchRecipes.");
   return new Promise((resolve, reject) => {
     // This function is called for you up above
     // From this function, you are going to fetch each of the recipes in the 'recipes' array above.
@@ -50,35 +46,24 @@ async function fetchRecipes() {
 
     // Part 1 Expose - TODO
 
-    console.log("In Promise constructor in fetchRecipes.");
-
     // # Part 1 - self-coded:
     for(let i = 0; i < recipes.length; i++) {
-      console.log("In for in Promise constructor.");
       let x = fetch(recipes[i])
       .then(response => response.json())
       .then(data => {
         recipeData[recipes[i]] = data;
-        console.log(data);
         return data;
       })
       .then(data => {
-        console.log("Object.keys(recipeData).length: ");
-        console.log(Object.keys(recipeData).length);
-        console.log("recipes.length: ");
-        console.log(recipes.length);
         if(Object.keys(recipeData).length == recipes.length) {
-          console.log("recipeData is of length 3.");
           resolve(true);
         }
         return data;
       })
       .catch(data => {
-        console.log("In catch for fetch().");
         reject(false);
       })
     }
-    console.log("After for loop in Promise constructor in fetch.");
   });
 }
 
@@ -89,7 +74,6 @@ function createRecipeCards() {
   // three recipes we give you, you'll use the bindShowMore() function to
   // show any others you've added when the user clicks on the "Show more" button.
 
-  console.log("In loop for recipeEl's.");
 
   // Part 1 Expose - TODO
   for(let i = 0; i < Object.keys(recipeData).length; i++) {
@@ -105,11 +89,7 @@ function createRecipeCards() {
     // rather use an assignment syntax.
     // .setData(recipeData[recipes[i]])
     const mainEl = document.getElementsByTagName("main")[0];
-
-    console.log("In loop for recipeEl's.");
-
     mainEl.appendChild(recipeEl);
-    console.log("After mainEl.appendChild(recipeEl).");
   }
 }
 
@@ -157,22 +137,16 @@ function butClickHandler(event) {
     // be in html page
     const mainEl = document.getElementsByTagName("main")[0];
     const recipeEls = document.getElementsByTagName("recipe-card");
-    console.log("recipeEls retrieved:");
-    console.log(recipeEls);
     // index of 3 used as additional recipes we added in local .json
     // files are #4-#6
     for(let j = 3; j < Object.keys(recipeData).length; j++) {
-      console.log("in for loop to delete");
       // note to self that this .remove() removes the element
       // from the array as well as from the DOM,
       // so need to keep index constant (as array length is decreasing
       // with each delete)
       recipeEls[3].remove();
-      console.log("Length of recipeEls:")
-      console.log(recipeEls.length);
     }
 
   } else {
-    console.log("Show more/less button error.");
   }
 }
