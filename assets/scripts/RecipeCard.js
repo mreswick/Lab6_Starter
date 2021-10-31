@@ -145,31 +145,33 @@ class RecipeCard extends HTMLElement {
       let imgAvgRevAlt = "";
 
       // set rating image and alt attribute based on (avg) rating val:
+      console.log("avgRating:");
+      console.log(avgRating);
       if(avgRating >= 4.5) {
-        imgAvgRevSrc = "/assets/images/icons/5-star.svg"
-        imgAvgRevAlt = "5 stars" 
+        imgAvgRevSrc = "/assets/images/icons/5-star.svg";
+        imgAvgRevAlt = "5 stars" ;
       } else if(avgRating < 4.5 && avgRating >= 3.5) {
-        imgAvgRevSrc = "/assets/images/icons/4-star.svg"
-        imgAvgRevAlt = "4 stars" 
+        imgAvgRevSrc = "/assets/images/icons/4-star.svg";
+        imgAvgRevAlt = "4 stars" ;
       } else if(avgRating < 3.5 && avgRating >= 2.5) {
-        imgAvgRevSrc = "/assets/images/icons/3-star.svg"
-        imgAvgRevAlt = "3 stars" 
+        imgAvgRevSrc = "/assets/images/icons/3-star.svg";
+        imgAvgRevAlt = "3 stars" ;
       } else if(avgRating < 2.5 && avgRating >= 1.5) {
-        imgAvgRevSrc = "/assets/images/icons/2-star.svg"
-        imgAvgRevAlt = "2 stars"
+        imgAvgRevSrc = "/assets/images/icons/2-star.svg";
+        imgAvgRevAlt = "2 stars";
       } else if(avgRating < 1.5 && avgRating >= 0.5) {
-        imgAvgRevSrc = "/assets/images/icons/1-star.svg"
-        imgAvgRevAlt = "1 stars"
+        imgAvgRevSrc = "/assets/images/icons/1-star.svg";
+        imgAvgRevAlt = "1 stars";
       } else { // < 0.5 rating
-        imgAvgRevSrc = "/assets/images/icons/0-star.svg"
-        imgAvgRevAlt = "0 stars"
+        imgAvgRevSrc = "/assets/images/icons/0-star.svg";
+        imgAvgRevAlt = "0 stars";
       }
 
       imgAvgRev.setAttribute("src", imgAvgRevSrc);
       imgAvgRev.setAttribute("alt", imgAvgRev);
       spanAvgRev.innerHTML = avgRating; 
       spanTotRev.innerHTML = "(" + numRatings + ")";
-      divRating.appendChild(spanAvgRev)
+      divRating.appendChild(spanAvgRev);
       // only append img and total_reviews span if has ratings:
       divRating.appendChild(imgAvgRev);
       divRating.appendChild(spanAvgRev);
@@ -188,7 +190,7 @@ class RecipeCard extends HTMLElement {
     // ingredients list for recipe:
     const pIngred = document.createElement('p');
     pIngred.setAttribute("class", "ingredients");
-    pIngred.innerHTML = getIngred(data);
+    pIngred.innerHTML = createIngredientList(getIngred(data));
 
     // ##
     // append children of article/card:
@@ -255,12 +257,12 @@ function getIngred(data) {
 
 // get rating
 function getRating(data) {
-  return searchForKey(data, "aggregateRating");
+  return searchForKey(data, "aggregateRating")["ratingValue"];
 }
 
 // get rating count
 function getRatingCount(data) {
-  return searchForKey(data, "ratingCount")
+  return searchForKey(data, "ratingCount");
 }
 
 
