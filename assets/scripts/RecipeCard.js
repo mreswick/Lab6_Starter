@@ -1,8 +1,11 @@
 class RecipeCard extends HTMLElement {
+  shadowRootEl = "";
   constructor() {
     // Part 1 Expose - TODO
 
     // You'll want to attach the shadow DOM here
+    super();
+    this.shadowRootEl = this.attachShadow({mode: 'open'});
   }
 
   set data(data) {
@@ -96,6 +99,118 @@ class RecipeCard extends HTMLElement {
     //    element.appendChild()
     //    & All of the helper functions below
 
+    console.log("In recipe card.");
+
+    const imgRec = document.createElement('img'); // img for recipe
+    // ## note to self: have to edit/modify a tag (such as its attributes, etc.)
+    // ## before calling appendChild() on it (or otherwise inserting/adding it to
+    // ## the DOM tree)
+    imgRec.setAttribute("src", getThumbnailUrl(data));
+    const recipeTitle = getRecipeTitle(data);
+    //console.log("recipeTitle:");
+    //console.log(recipeTitle);
+    imgRec.setAttribute("alt", recipeTitle); // treat title == recipe title
+
+    const pTitle = document.createElement('p');
+    pTitle.setAttribute("class", "title");
+
+    const aTitle = document.createElement('a');
+    aTitle.setAttribute("href", getUrl(data));
+    aTitle.innerHTML = recipeTitle;
+    pTitle.appendChild(aTitle);
+
+    const pOrg = document.createElement('p');
+    pOrg.setAttribute("class", "organization");
+    pOrg.innerHTML = getOrganization(data);
+
+    const divRating = document.createElement('div');
+    divRating.setAttribute("class", "rating");
+
+    const spanAvgRev = document.createElement('span');
+    const imgAvgRev = document.createElement('img');
+    const numRatings = getRatingCount(data);
+
+    const spanTotRev = document.createElement('span');
+    
+
+    
+
+    // if has ratings, then create "With a Rating" card for the recipe
+    if(numRatings > 0) {
+      spanAvgRev.innerHTML = numRatings;
+      // round up for stars (i.e., 4.8 rating -> 5 star icon as >= 4.5)
+      const avgRating = getRating(data);
+      
+      let imgAvgRevSrc = "";
+      let imgAvgRevAlt = "";
+
+      // set rating image and alt attribute based on (avg) rating val:
+      if(avgRating >= 4.5) {
+        imgAvgRevSrc = "/assets/images/icons/5-star.svg"
+        imgAvgRevAlt = "5 stars" 
+      } else if(avgRating < 4.5 && avgRating >= 3.5) {
+        imgAvgRevSrc = "/assets/images/icons/4-star.svg"
+        imgAvgRevAlt = "4 stars" 
+      } else if(avgRating < 3.5 && avgRating >= 2.5) {
+        imgAvgRevSrc = "/assets/images/icons/3-star.svg"
+        imgAvgRevAlt = "3 stars" 
+      } else if(avgRating < 2.5 && avgRating >= 1.5) {
+        imgAvgRevSrc = "/assets/images/icons/2-star.svg"
+        imgAvgRevAlt = "2 stars"
+      } else if(avgRating < 1.5 && avgRating >= 0.5) {
+        imgAvgRevSrc = "/assets/images/icons/1-star.svg"
+        imgAvgRevAlt = "1 stars"
+      } else { // < 0.5 rating
+        imgAvgRevSrc = "/assets/images/icons/0-star.svg"
+        imgAvgRevAlt = "0 stars"
+      }
+
+      imgAvgRev.setAttribute("src", imgAvgRevSrc);
+      imgAvgRev.setAttribute("alt", imgAvgRev);
+      spanAvgRev.innerHTML = avgRating; 
+      spanTotRev.innerHTML = "(" + numRatings + ")";
+      divRating.appendChild(spanAvgRev)
+      // only append img and total_reviews span if has ratings:
+      divRating.appendChild(imgAvgRev);
+      divRating.appendChild(spanAvgRev);
+
+
+    } // else if has no ratings, create "Without a Rating" card
+    else {
+      spanAvgRev.innerHTML = "No Reviews";
+      divRating.appendChild(spanAvgRev);
+    }
+
+    // total time for recipe:
+    const timeRec = document.createElement('time');
+    timeRec.innerHTML = getRecTotTime(data);
+
+    // ingredients list for recipe:
+    const pIngred = document.createElement('p');
+    pIngred.setAttribute("class", "ingredients");
+    pIngred.innerHTML = createIngredientList(getIngred(data));
+
+    // ##
+    // append children of article/card:
+    
+    card.appendChild(imgRec);
+    card.appendChild(pTitle);
+    card.appendChild(pOrg);
+    card.appendChild(divRating);
+    card.append(timeRec);
+    card.append(pIngred);
+
+    // attach shadow:
+    this.shadowRootEl.appendChild(styleElem);
+    this.shadowRootEl.appendChild(card);
+    
+
+
+    // console.log(searchForKey(data, "rating"))
+    
+
+
+
     // Make sure to attach your root element and styles to the shadow DOM you
     // created in the constructor()
 
@@ -109,6 +224,49 @@ class RecipeCard extends HTMLElement {
 /***          Below are some functions I used when making          ***/
 /***     the solution, feel free to use them or not, up to you     ***/
 /*********************************************************************/
+
+
+//## Self-coded:
+// gets url for thumnbnail for recipe
+function getThumbnailUrl(data) {
+  const thumbnailUrl = searchForKey(data, "thumbnailUrl");
+  return thumbnailUrl;
+}
+
+function getTitleUrl(data) {
+
+}
+
+// gets title of recipe
+function getRecipeTitle(data) {
+  return searchForKey(data, "headline");
+
+}
+
+// gets total cook time of recipe
+function getRecTotTime(data) {
+  return convertTime(searchForKey(data, "totalTime"));
+}
+
+// gets ingredients
+function getIngred(data) {
+  return searchForKey(data, "recipeIngredient");
+}
+
+// get rating
+function getRating(data) {
+  return searchForKey(data, "aggregateRating");
+}
+
+// get rating count
+function getRatingCount(data) {
+  return searchForKey(data, "ratingCount")
+}
+
+
+// ##
+
+
 
 /**
  * Recursively search for a key nested somewhere inside an object
